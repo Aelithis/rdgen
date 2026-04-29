@@ -604,6 +604,15 @@ jobs:
         run: |
           mv ./SignOutput/rustdesk.msi "./SignOutput/${{ env.filename }}.msi" || echo "rustdesk"
 
+      - name: Upload built client to GitHub artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rustdesk-custom-windows-${{ github.run_id }}
+          path: SignOutput/*
+          retention-days: 14
+          if-no-files-found: warn
+
       - name: send file to rdgen server
         if: ${{ env.rdgen == 'true' }}
         uses: nick-fields/retry@v3
